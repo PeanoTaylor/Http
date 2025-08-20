@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/server.dir/CloudiskServer.cpp.o CMakeFiles/server.dir/CryptoUtil.cpp.o CMakeFiles/server.dir/main.cpp.o -o ../server  -lcrypto -lssl -ljwt -lwfrest -lworkflow 

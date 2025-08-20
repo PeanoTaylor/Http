@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Clouddisk 首页</title>
+  <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+  <script src="/static/js/auth.js"></script>
+
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+
+    .navbar-custom {
+      background: linear-gradient(90deg, #6fb1fc, #4364f7);
+      color: #fff;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 10px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-title {
+      font-size: 20px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      border: 2px solid #fff;
+    }
+
+    .user-text {
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.2;
+      text-align: left;
+    }
+
+    .content {
+      background: #fff;
+      padding: 25px;
+      margin: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .content h4 {
+      margin: 0;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .divider {
+      height: 2px;
+      background: #6fb1fc;
+      margin: 15px 0;
+    }
+
+    .file-table th {
+      background: #f1f4f9;
+      text-align: center;
+    }
+
+    .file-table td {
+      text-align: center;
+      vertical-align: middle !important;
+    }
+
+    .btn-upload {
+      background: #28a745;
+      color: #fff;
+      border-radius: 20px;
+      padding: 6px 20px;
+      transition: 0.2s;
+    }
+
+    .btn-upload:hover {
+      background: #218838;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 顶部导航 -->
+  <div class="navbar-custom">
+    <div class="navbar-title">Clouddisk 云盘首页</div>
+    <div class="user-info">
+      <img src="/static/img/avatar.jpeg" alt="用户头像">
+      <div class="user-text">
+        <div id="username">加载中...</div>
+        <div id="regtime"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 内容区 -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="content">
+          <div class="clearfix">
+            <h4 class="pull-left">📂 文件列表</h4>
+            <button class="btn btn-upload pull-right" onclick="toUploadFile()">上传文件</button>
+          </div>
+          <div class="divider"></div>
+          <table id="filetbl" class="table table-bordered table-hover file-table">
+            <thead>
+              <tr>
+                <th>文件哈希</th>
+                <th>文件名</th>
+                <th>大小</th>
+                <th>创建时间</th>
+                <th>最后修改</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- JS 动态填充 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      $.ajax({
+        url: "/user/info?" + queryParams(),
+        type: "GET",
+        dataType: "text",
+        success: function (body) {
+          var resp = JSON.parse(body);
+          document.getElementById("username").innerText = resp.data.Username;
+          document.getElementById("regtime").innerText = resp.data.SignupAt;
+          updateFileList();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert(textStatus + " : " + errorThrown);
+        }
+      });
+    }
+
+    function queryParams() {
+      let username = localStorage.getItem("username");
+      let token = localStorage.getItem("token");
+      if (!username || !token) {
+        return "";
+      }
+      return "username=" + encodeURIComponent(username) + "&token=" + encodeURIComponent(token);
+    }
+
+    function updateFileList() {
+      $.ajax({
+        url: "/file/query?" + queryParams(),
+        type: "POST",
+        data: { limit: 15 },
+        success: function (body) {
+          if (!body) return;
+          var data = JSON.parse(body);
+          if (!data || data.length <= 0) return;
+
+          var tableBody = document.getElementById('filetbl').getElementsByTagName('tbody')[0];
+          tableBody.innerHTML = "";
+
+          for (var i = 0; i < data.length; i++) {
+            var row = tableBody.insertRow();
+            row.insertCell().innerHTML = data[i].FileHash.substr(0, 20) + "...";
+            row.insertCell().innerHTML = data[i].FileName;
+            row.insertCell().innerHTML = data[i].FileSize + " bytes";
+            row.insertCell().innerHTML = data[i].UploadAt;
+            row.insertCell().innerHTML = data[i].LastUpdated;
+            row.insertCell().innerHTML =
+              '<button class="btn btn-primary btn-xs" onclick="downloadFile(\'/file/download?filename=' +
+              data[i].FileName + '&filehash=' + data[i].FileHash + '&' + queryParams() + '\')">下载</button> ' +
+              '<button class="btn btn-danger btn-xs" onclick="deleteFile(\'' +
+              data[i].FileHash + '\', \'' + data[i].FileName + '\')">删除</button>';
+          }
+        }
+      });
+    }
+
+    function toUploadFile() {
+      window.location.href = '/file/upload?' + queryParams();
+    }
+
+    function downloadFile(durl) {
+      window.location.href = durl;
+    }
+
+    // 删除文件接口调用
+    function deleteFile(filehash, filename) {
+      if (!confirm("确认删除文件【" + filename + "】吗？")) {
+        return;
+      }
+      $.ajax({
+        url: "/file/delete?" + queryParams(),
+        type: "POST",
+        dataType: "json",   // 👈 自动解析
+        data: { filehash: filehash, filename: filename },
+        success: function (res) {
+          if (res.status === "SUCCESS") {
+            alert("文件删除成功！" + (res.msg || ""));
+            updateFileList();
+          } else {
+            alert("文件删除失败！" + (res.msg || ""));
+          }
+        },
+        error: function () {
+          alert("请求删除失败！");
+        }
+      });
+    }
+
+  </script>
+</body>
+
+</html>

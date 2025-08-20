@@ -1,0 +1,25 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "position": "Developer",
+      "skills": ["JavaScript", "Python", "SQL"],
+      "salary": 75000
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "position": "Designer",
+      "skills": ["Photoshop", "Illustrator", "UI/UX"],
+      "salary": 68000
+    },
+    {
+      "id": 3,
+      "name": "Mike Johnson",
+      "position": "Developer",
+      "skills": ["Java", "Spring", "AWS"],
+      "salary": 82000
+    }
+  ]
+}

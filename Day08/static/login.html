@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>登录页面</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f2f2f2; display:flex; justify-content:center; align-items:center; height:100vh; }
+    .container { background:#fff; padding:20px 30px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); width:300px; }
+    h2 { text-align:center; margin-bottom:20px; }
+    input[type="text"], input[type="password"] { width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:4px; }
+    button { width:100%; padding:10px; background-color:#2196F3; border:none; color:white; font-size:16px; border-radius:4px; cursor:pointer; }
+    button:hover { background-color:#1976D2; }
+    .link { text-align:center; margin-top:10px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>登录</h2>
+  <input id="username" type="text" placeholder="用户名" required>
+  <input id="password" type="password" placeholder="密码" required>
+  <button id="btn">登录</button>
+  <div class="link">没有账号？<a href="/user/signup">注册</a></div>
+</div>
+<script>
+document.getElementById('btn').addEventListener('click', async () => {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  if (!username || !password) { alert('请输入用户名和密码'); return; }
+  try {
+    const resp = await fetch('/user/signin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const text = await resp.text();
+    alert(text);
+  } catch (e) {
+    alert('请求失败：' + e);
+  }
+});
+</script>
+</body>
+</html>
