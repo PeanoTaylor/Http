@@ -636,7 +636,7 @@ void CloudiskServer::register_filedelete_module() {
 
                 // Step2: 删除用户文件记录
                 string sql_delete = "DELETE FROM tbl_file WHERE  hashcode='" + hashcode +
-                    "' AND filename='" + filename + "' LIMIT 1;";
+                    "' AND filename='" + filename + "' AND uid= '" + std::to_string(uid) + "' LIMIT 1;";
                     cout << sql_delete << endl;
                 resp -> MySQL(mysql_url, sql_delete,
                     [resp, uid, hashcode](MySQLResultCursor * del_cursor) {
