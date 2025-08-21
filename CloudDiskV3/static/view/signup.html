@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>用户注册</title>
+  <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background: #f4f6f9;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+    .signup-container {
+      width: 450px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .signup-container h2 {
+      margin-bottom: 25px;
+      font-weight: bold;
+      color: #333;
+    }
+    .form-control {
+      margin-bottom: 20px;
+      height: 45px;
+      border-radius: 8px;
+    }
+    .btn-signup {
+      height: 45px;
+      font-size: 16px;
+      border-radius: 25px;
+    }
+    #login_hint {
+      margin-top: 15px;
+      color: green;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="signup-container">
+    <h2>用户注册</h2>
+    <input id="username" type="text" class="form-control" placeholder="请输入用户名">
+    <input id="password" type="password" class="form-control" placeholder="请输入密码">
+    <input id="passwordc" type="password" class="form-control" placeholder="请再次输入密码">
+    <button class="btn btn-success btn-block btn-signup" onclick="onSignup()">注册</button>
+    <div id="login_hint">注册成功！正在跳转到登录页面...</div>
+  </div>
+
+  <script>
+    function onSignup() {
+      var username = document.getElementById('username').value.trim();
+      var password = document.getElementById('password').value;
+      var passwordc = document.getElementById('passwordc').value;
+
+      // ✅ 前端校验：两次密码必须一致
+      if (!username) {
+        alert("请输入用户名！");
+        return;
+      }
+      if (!password || !passwordc) {
+        alert("请输入密码！");
+        return;
+      }
+      if (password !== passwordc) {
+        alert("两次输入的密码不一致，请重新输入！");
+        return;
+      }
+
+      $.ajax({
+        url: "/user/signup",
+        dataType: "json",
+        type: "POST",
+        data: {
+          "username": username,
+          "password": password,
+          "passwordc": passwordc
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("注册失败: " + textStatus);
+        },
+        success: function (data) {
+          if (data.status === 'SUCCESS') {
+            document.getElementById("login_hint").style.display = "block";
+            setTimeout(() => {
+              window.location.href = '/static/view/signin.html';
+            }, 2000);
+          } else {
+            alert('注册失败：' + (data.message || "未知错误"));
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
