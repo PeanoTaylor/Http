@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/server.dir/server.cpp.o CMakeFiles/server.dir/example.pb.cpp.o -o ../server  -lsrpc -llz4 -lsnappy -lprotobuf -lworkflow 

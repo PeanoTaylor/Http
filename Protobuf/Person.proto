@@ -1,0 +1,9 @@
+syntax = "proto3"; // 使用 proto3 语法
+package tutorial; // 命名空间
+
+// 定义消息类型
+message Person{
+    int32 id = 1; // 字段编号必须唯一，且一旦定义不能改
+    string name = 2;
+    string email = 3;
+}

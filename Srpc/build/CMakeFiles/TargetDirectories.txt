@@ -1,0 +1,4 @@
+/home/zhang/Http/Srpc/build/CMakeFiles/server.dir
+/home/zhang/Http/Srpc/build/CMakeFiles/client.dir
+/home/zhang/Http/Srpc/build/CMakeFiles/edit_cache.dir
+/home/zhang/Http/Srpc/build/CMakeFiles/rebuild_cache.dir
