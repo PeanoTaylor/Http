@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>用户登录</title>
+  <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background: #f4f6f9;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+    .login-container {
+      width: 400px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .login-container h2 {
+      margin-bottom: 25px;
+      font-weight: bold;
+      color: #333;
+    }
+    .form-control {
+      margin-bottom: 20px;
+      height: 45px;
+      border-radius: 8px;
+    }
+    #loginBtn {
+      height: 45px;
+      font-size: 16px;
+      border-radius: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2>用户登录</h2>
+    <input id="username" type="text" class="form-control" placeholder="请输入用户名">
+    <input id="password" type="password" class="form-control" placeholder="请输入密码">
+    <button id="loginBtn" class="btn btn-success btn-block">登录</button>
+  </div>
+
+  <script>
+    $(function () {
+      $("#loginBtn").click(function () {
+        var username = $("#username").val();
+        var password = $("#password").val();
+
+        $.ajax({
+          url: "/user/signin",
+          type: "POST",
+          data: {
+            "username": username,
+            "password": password
+          },
+          success: function (resp) {
+            if (resp && resp.data) {
+              localStorage.setItem("token", resp.data.token);
+              localStorage.setItem("username", resp.data.username);
+              window.location.href = resp.data.location;
+            } else {
+              alert("登录失败，返回数据格式不正确");
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.error("请求失败:", textStatus, errorThrown);
+            alert("登录失败: " + textStatus);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

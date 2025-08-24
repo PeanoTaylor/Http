@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/server.dir/CloudiskServer.cpp.o CMakeFiles/server.dir/CryptoUtil.cpp.o CMakeFiles/server.dir/main.cpp.o CMakeFiles/server.dir/OssClientWrapper.cpp.o CMakeFiles/server.dir/MqClientWrapper.cpp.o -o ../server  -lcrypto -lssl -ljwt -lwfrest -lworkflow -lalibabacloud-oss-cpp-sdk -lcurl -lpthread -lSimpleAmqpClient -lrabbitmq -lboost_system 

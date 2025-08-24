@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/cloudisk_rpc_client.dir/client.cpp.o CMakeFiles/cloudisk_rpc_client.dir/clouddisk.pb.cpp.o -o bin/cloudisk_rpc_client  -lprotobuf -lsrpc -lworkflow -lpthread -llz4 -lsnappy 

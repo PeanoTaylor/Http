@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/mq_consumer.dir/MqConsumer.cpp.o CMakeFiles/mq_consumer.dir/MqClientWrapper.cpp.o CMakeFiles/mq_consumer.dir/OssClientWrapper.cpp.o -o bin/mq_consumer  -lworkflow -lwfrest -lssl -lcrypto -lpthread -lcurl -lSimpleAmqpClient -lrabbitmq -lboost_system -lalibabacloud-oss-cpp-sdk 

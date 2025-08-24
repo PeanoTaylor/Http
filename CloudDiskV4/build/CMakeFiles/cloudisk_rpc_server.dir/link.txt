@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/cloudisk_rpc_server.dir/server.cpp.o CMakeFiles/cloudisk_rpc_server.dir/CryptoUtil.cpp.o CMakeFiles/cloudisk_rpc_server.dir/clouddisk.pb.cpp.o -o bin/cloudisk_rpc_server  -lsrpc -lworkflow -lprotobuf -lcrypto -lssl 

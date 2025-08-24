@@ -1,0 +1,4 @@
+/home/zhang/Http/CloudDiskV4/build/CMakeFiles/rpc_server.dir
+/home/zhang/Http/CloudDiskV4/build/CMakeFiles/cloudisk_server.dir
+/home/zhang/Http/CloudDiskV4/build/CMakeFiles/edit_cache.dir
+/home/zhang/Http/CloudDiskV4/build/CMakeFiles/rebuild_cache.dir
